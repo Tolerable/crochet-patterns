@@ -249,8 +249,9 @@ Processor: `C:\Users\wetwi\OneDrive\AI\voice-identity\processors\voice_processor
 - [x] Community voices opt-in
 - [ ] Voice sharing requests flow (pending approval UI)
 
-### Phase 5: Network Expansion
-- [ ] Integrate voice system into other eztunes sites
+### Phase 5: Network Expansion (LATER)
+- [ ] Integrate into ALL network sites (eztunes, sitenavigator, colab, etc.)
+- [ ] Decide architecture: shared service vs per-project setup
 - [ ] Central voice identity service/API
 - [ ] Cross-site voice preference sync
 
