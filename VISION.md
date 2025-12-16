@@ -223,10 +223,18 @@ This is potentially a first - **User-Owned Voice Identity** as a service layer:
 - [x] voice_profiles table for tracking
 
 ### Phase 2: Processing Pipeline
-- [ ] Chatterbox integration - pull from bucket, clone voice
+- [x] Chatterbox integration - `audio_prompt_path` param clones any voice
 - [ ] Store voice model in GitHub repo `/voices/{user_id}/`
 - [ ] Delete raw audio from Supabase bucket after processing
 - [ ] Update voice_profiles with model location and status='ready'
+
+**Chatterbox Usage (KNOW THIS):**
+```python
+from chatterbox.tts import ChatterboxTTS
+model = ChatterboxTTS.from_pretrained(device="cuda")
+audio = model.generate(text, audio_prompt_path="/path/to/sample.wav")
+```
+Processor: `C:\Users\wetwi\OneDrive\AI\voice-identity\processors\voice_processor.py`
 
 ### Phase 3: Playback System
 - [ ] Voice model caching in localStorage/IndexedDB
