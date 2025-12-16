@@ -97,10 +97,84 @@ CREATE TABLE voice_generations (
 7. User identified by email for cross-site voice access
 
 ## Storage Strategy
-- **localStorage**: Temporary playback on same browser (free, instant)
-- **Supabase bucket**: Intake queue for processing (temporary)
-- **GitHub repo**: Final voice models after Chatterbox processing (permanent, free)
-- **voice_profiles table**: Tracks user email -> voice model location
+
+### Three-Tier Architecture
+```
+[Browser Cache] ←→ [GitHub Repo] ←→ [Supabase DB]
+   (hot)             (cold)          (metadata)
+```
+
+- **Browser (localStorage/IndexedDB)**: Hot cache, instant playback, zero network after first load
+- **GitHub repo**: Cold storage, source of truth for voice models, free permanent hosting
+- **Supabase bucket**: Intake queue only (temporary, deleted after processing)
+- **voice_profiles table**: Metadata - tracks user email → voice model location in repo
+
+### Caching Flow
+1. User requests their voice model
+2. Check localStorage first → **cache hit = instant, zero network**
+3. Cache miss → fetch from GitHub repo once
+4. Store in localStorage with version/etag
+5. Periodic version check against GitHub
+6. GitHub only hit on first load or version update
+7. Works offline once cached
+
+```javascript
+// Pseudocode
+async function getVoiceModel(email) {
+    const cached = localStorage.getItem(`voice_${email}`);
+    const cachedVersion = localStorage.getItem(`voice_${email}_version`);
+
+    if (cached && cachedVersion === latestVersion) {
+        return JSON.parse(cached);  // Instant, no network
+    }
+
+    // Cache miss - fetch from GitHub once
+    const model = await fetch(`https://raw.githubusercontent.com/.../voices/${email}/model.json`);
+    localStorage.setItem(`voice_${email}`, JSON.stringify(model));
+    localStorage.setItem(`voice_${email}_version`, latestVersion);
+    return model;
+}
+```
+
+## Voice Wardrobe System
+
+Users don't just have ONE voice - they have a **voice wardrobe**:
+
+### Layers
+1. **Base Voice**: Their cloned voice (default identity)
+2. **Mood Variants**: Same voice, different styles (calm, excited, dramatic)
+3. **Per-Site Overrides**: Different voice per site context
+4. **Shared Voices**: Friends/family voices (with permission)
+5. **Community Voices**: Opt-in public voices others can use
+
+### Data Model
+```javascript
+voice_preferences: {
+    user_email: "gloop@email.com",
+    default_voice: "gloop_base",
+    site_overrides: {
+        "rpg.eztunes.xyz": "gloop_dramatic",
+        "crochet-patterns": "friend_sarah_calm",
+        "games": "community_hype_announcer"
+    },
+    shared_with: ["friend@email.com"],  // Who can use my voice
+    using_voices: ["sarah@email.com"]   // Whose voices I'm using
+}
+```
+
+### Use Cases
+- **RPG**: Deeper, dramatic version for quest narration
+- **Crochet**: Calm, instructional tone for pattern reading
+- **Games**: Excited, energetic for announcements
+- **Learning**: Your own voice reinforces memory
+- **Accessibility**: Familiar voice for those with reading difficulties
+
+### Voice Sharing Flow
+1. User A enables "share my voice" in settings
+2. User B requests to use User A's voice
+3. User A approves (or auto-approve for friends list)
+4. User B can now select User A's voice for any site
+5. Both users' preferences stored, voice model shared
 
 ## Future Expansion
 - Central voice profile service across all eztunes.xyz sites
@@ -108,6 +182,7 @@ CREATE TABLE voice_generations (
 - Generate audio on-demand for any text
 - Multiple voice "moods" (calm, excited, serious)
 - Share voice profiles with family/friends (opt-in)
+- Voice marketplace - premium/celebrity voices
 
 ## The Bigger Picture: User-Owned Voice Identity
 
@@ -135,6 +210,40 @@ This is potentially a first - **User-Owned Voice Identity** as a service layer:
 - API for other developers to tap into
 - "Add voice personalization to your site in 5 minutes"
 - Users bring their voice profile with them
+
+---
+
+## Implementation TODO
+
+### Phase 1: Core (DONE)
+- [x] Voice recording UI (no signup required)
+- [x] localStorage for instant local playback
+- [x] Signup flow to save permanently
+- [x] Upload to Supabase bucket (intake queue)
+- [x] voice_profiles table for tracking
+
+### Phase 2: Processing Pipeline
+- [ ] Chatterbox integration - pull from bucket, clone voice
+- [ ] Store voice model in GitHub repo `/voices/{user_id}/`
+- [ ] Delete raw audio from Supabase bucket after processing
+- [ ] Update voice_profiles with model location and status='ready'
+
+### Phase 3: Playback System
+- [ ] Voice model caching in localStorage/IndexedDB
+- [ ] Version checking against GitHub
+- [ ] TTS generation using cached voice model
+- [ ] Playback buttons next to phonetic spellings
+
+### Phase 4: Voice Wardrobe
+- [ ] voice_preferences table for per-site overrides
+- [ ] Settings UI for managing voice preferences
+- [ ] Voice sharing permissions system
+- [ ] Community voices opt-in
+
+### Phase 5: Network Expansion
+- [ ] Integrate voice system into other eztunes sites
+- [ ] Central voice identity service/API
+- [ ] Cross-site voice preference sync
 
 ---
 *Conceived during crochet-patterns development, December 2024*
