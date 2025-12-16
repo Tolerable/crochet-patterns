@@ -89,6 +89,7 @@
                 </div>
                 <div class="content">
                     <h3>Pikachu Amigurumi</h3>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(PEE-kah-choo)</p>
                     <p>Adorable Pikachu plushie with full step-by-step instructions. Perfect for Pokemon fans!</p>
                     <a href="patterns/pikachu.html" class="btn">View Pattern</a>
                 </div>
@@ -100,8 +101,9 @@
                 </div>
                 <div class="content">
                     <h3>Charmander Amigurumi</h3>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(CHAR-man-der)</p>
                     <p>Fire-type starter Pokemon with flame tail detail. Intermediate level pattern.</p>
-                    <a href="#" class="btn" style="opacity:0.5;">Coming Soon</a>
+                    <a href="patterns/charmander.html" class="btn">View Pattern</a>
                 </div>
             </div>
 
@@ -111,8 +113,9 @@
                 </div>
                 <div class="content">
                     <h3>Squirtle Amigurumi</h3>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(SKWIR-tul)</p>
                     <p>Water-type turtle Pokemon with shell details. Great for beginners!</p>
-                    <a href="#" class="btn" style="opacity:0.5;">Coming Soon</a>
+                    <a href="patterns/squirtle.html" class="btn">View Pattern</a>
                 </div>
             </div>
 
@@ -122,12 +125,175 @@
                 </div>
                 <div class="content">
                     <h3>Eevee Amigurumi</h3>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(EE-vee)</p>
                     <p>Fluffy normal-type with loop stitch mane and tail. Intermediate pattern.</p>
                     <a href="patterns/eevee.html" class="btn">View Pattern</a>
                 </div>
             </div>
 
         </div>
+
+        <!-- Voice Personalization -->
+        <div class="pattern-card" style="margin-top: 30px; background: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);">
+            <div class="content">
+                <h3 style="color: #2d6a4f; margin-bottom: 15px;">Hear Names in YOUR Voice!</h3>
+                <p style="margin-bottom: 15px; color: #40916c;">Record a short voice sample and we'll use AI to read Pokemon names back to you in your own voice!</p>
+
+                <div id="voiceSection">
+                    <input type="text" id="voiceName" placeholder="Your name" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #88d8b0; border-radius: 8px; font-size: 16px;">
+                    <input type="email" id="voiceEmail" placeholder="Your email" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #88d8b0; border-radius: 8px; font-size: 16px;">
+
+                    <p style="font-size: 13px; color: #40916c; margin-bottom: 10px;">Read this aloud when recording: <strong>"Hi, my name is [your name]. Pikachu, Charmander, Squirtle, Eevee!"</strong></p>
+
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <button id="recordBtn" onclick="toggleRecording()" style="flex: 1; padding: 15px; background: #2d6a4f; color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer;">
+                            Start Recording
+                        </button>
+                        <button id="playBtn" onclick="playRecording()" disabled style="padding: 15px 25px; background: #40916c; color: white; border: none; border-radius: 25px; font-size: 16px; cursor: pointer; opacity: 0.5;">
+                            Play
+                        </button>
+                    </div>
+
+                    <div id="recordingStatus" style="text-align: center; padding: 10px; display: none;">
+                        <span style="color: #e63946; font-weight: bold;">Recording...</span>
+                    </div>
+
+                    <button id="submitVoiceBtn" onclick="submitVoice()" disabled style="width: 100%; padding: 15px; background: #1b4332; color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; opacity: 0.5;">
+                        Submit Voice Sample
+                    </button>
+
+                    <p id="voiceStatus" style="margin-top: 15px; text-align: center; display: none;"></p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        const SUPABASE_URL = 'https://bugpycickribmdfprryq.supabase.co';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1Z3B5Y2lja3JpYm1kZnBycnlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk2ODQ5MzgsImV4cCI6MjA3NTI2MDkzOH0.1S1ZoV4TvhIyUjKvwYE6wZexS2aM_EMNJzV9Gn8M1CI';
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let audioBlob;
+        let isRecording = false;
+
+        async function toggleRecording() {
+            const btn = document.getElementById('recordBtn');
+            const statusDiv = document.getElementById('recordingStatus');
+
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+                    mediaRecorder.onstop = () => {
+                        audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        document.getElementById('playBtn').disabled = false;
+                        document.getElementById('playBtn').style.opacity = '1';
+                        document.getElementById('submitVoiceBtn').disabled = false;
+                        document.getElementById('submitVoiceBtn').style.opacity = '1';
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    btn.textContent = 'Stop Recording';
+                    btn.style.background = '#e63946';
+                    statusDiv.style.display = 'block';
+                } catch (err) {
+                    alert('Could not access microphone. Please allow microphone access.');
+                }
+            } else {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                btn.textContent = 'Re-record';
+                btn.style.background = '#2d6a4f';
+                statusDiv.style.display = 'none';
+            }
+        }
+
+        function playRecording() {
+            if (audioBlob) {
+                const audio = new Audio(URL.createObjectURL(audioBlob));
+                audio.play();
+            }
+        }
+
+        async function submitVoice() {
+            const name = document.getElementById('voiceName').value.trim();
+            const email = document.getElementById('voiceEmail').value.trim();
+            const status = document.getElementById('voiceStatus');
+
+            if (!name || !email) {
+                status.style.display = 'block';
+                status.style.color = '#e63946';
+                status.textContent = 'Please fill in your name and email.';
+                return;
+            }
+
+            if (!audioBlob) {
+                status.style.display = 'block';
+                status.style.color = '#e63946';
+                status.textContent = 'Please record a voice sample first.';
+                return;
+            }
+
+            status.style.display = 'block';
+            status.style.color = '#40916c';
+            status.textContent = 'Uploading...';
+
+            try {
+                // Upload to storage
+                const filename = `${Date.now()}_${email.replace('@', '_at_')}.webm`;
+                const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/voice-samples/${filename}`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON,
+                        'Authorization': `Bearer ${SUPABASE_ANON}`,
+                        'Content-Type': 'audio/webm'
+                    },
+                    body: audioBlob
+                });
+
+                if (!uploadRes.ok) {
+                    throw new Error('Upload failed');
+                }
+
+                const voiceSampleUrl = `${SUPABASE_URL}/storage/v1/object/public/voice-samples/${filename}`;
+
+                // Create voice profile
+                const profileRes = await fetch(`${SUPABASE_URL}/rest/v1/voice_profiles`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON,
+                        'Authorization': `Bearer ${SUPABASE_ANON}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        user_email: email,
+                        display_name: name,
+                        voice_sample_url: voiceSampleUrl,
+                        status: 'pending'
+                    })
+                });
+
+                if (profileRes.ok) {
+                    status.style.color = '#2ecc71';
+                    status.textContent = 'Voice sample submitted! We\'ll process it and notify you when ready.';
+                    document.getElementById('submitVoiceBtn').disabled = true;
+                    document.getElementById('submitVoiceBtn').style.opacity = '0.5';
+                } else {
+                    throw new Error('Profile creation failed');
+                }
+            } catch (err) {
+                status.style.color = '#e63946';
+                status.textContent = 'Oops! Something went wrong. Try again later.';
+                console.error(err);
+            }
+        }
+        </script>
 
         <!-- Request Form -->
         <div class="pattern-card" style="margin-top: 30px;">
