@@ -56,29 +56,6 @@
             transition: opacity 0.3s;
         }
         .pattern-card .btn:hover { opacity: 0.9; }
-        .play-btn {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background: #667eea;
-            border-radius: 50%;
-            cursor: pointer;
-            margin-left: 5px;
-            vertical-align: middle;
-            position: relative;
-        }
-        .play-btn:after {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 5px;
-            border-style: solid;
-            border-width: 5px 0 5px 8px;
-            border-color: transparent transparent transparent white;
-        }
-        .play-btn:hover { background: #764ba2; }
-        .play-btn.playing { background: #e63946; }
-        .pronunciation { display: inline-flex; align-items: center; }
         .tagline {
             text-align: center;
             color: white;
@@ -112,7 +89,7 @@
                 </div>
                 <div class="content">
                     <h3>Pikachu Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(PEE-kah-choo) <span class="play-btn" onclick="playPronunciation('pikachu')" title="Hear it"></span></p>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(PEE-kah-choo)</p>
                     <p>Adorable Pikachu plushie with full step-by-step instructions. Perfect for Pokemon fans!</p>
                     <a href="patterns/pikachu.html" class="btn">View Pattern</a>
                 </div>
@@ -124,7 +101,7 @@
                 </div>
                 <div class="content">
                     <h3>Charmander Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(CHAR-man-der) <span class="play-btn" onclick="playPronunciation('charmander')" title="Hear it"></span></p>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(CHAR-man-der)</p>
                     <p>Fire-type starter Pokemon with flame tail detail. Intermediate level pattern.</p>
                     <a href="patterns/charmander.html" class="btn">View Pattern</a>
                 </div>
@@ -136,7 +113,7 @@
                 </div>
                 <div class="content">
                     <h3>Squirtle Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(SKWIR-tul) <span class="play-btn" onclick="playPronunciation('squirtle')" title="Hear it"></span></p>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(SKWIR-tul)</p>
                     <p>Water-type turtle Pokemon with shell details. Great for beginners!</p>
                     <a href="patterns/squirtle.html" class="btn">View Pattern</a>
                 </div>
@@ -148,7 +125,7 @@
                 </div>
                 <div class="content">
                     <h3>Eevee Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(EE-vee) <span class="play-btn" onclick="playPronunciation('eevee')" title="Hear it"></span></p>
+                    <p style="font-style: italic; color: #999; font-size: 12px;">(EE-vee)</p>
                     <p>Fluffy normal-type with loop stitch mane and tail. Intermediate pattern.</p>
                     <a href="patterns/eevee.html" class="btn">View Pattern</a>
                 </div>
@@ -197,73 +174,6 @@
         <script>
         const SUPABASE_URL = 'https://bugpycickribmdfprryq.supabase.co';
         const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1Z3B5Y2lja3JpYm1kZnBycnlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk2ODQ5MzgsImV4cCI6MjA3NTI2MDkzOH0.1S1ZoV4TvhIyUjKvwYE6wZexS2aM_EMNJzV9Gn8M1CI';
-        const GITHUB_VOICES_URL = 'https://raw.githubusercontent.com/Tolerable/crochet-patterns/main/voices';
-
-        // Audio cache for pronunciations
-        const audioCache = {};
-        let currentAudio = null;
-
-        async function playPronunciation(pokemon) {
-            const voiceEmail = localStorage.getItem('voiceEmail');
-            const btn = event.target;
-
-            // Stop any playing audio
-            if (currentAudio) {
-                currentAudio.pause();
-                document.querySelectorAll('.play-btn.playing').forEach(b => b.classList.remove('playing'));
-            }
-
-            // If user has a voice profile, try to play their personalized version
-            if (voiceEmail) {
-                const safeEmail = voiceEmail.replace('@', '_at_').replace(/\./g, '_');
-                const audioUrl = `${GITHUB_VOICES_URL}/${safeEmail}/${pokemon}.wav`;
-
-                // Check cache first
-                const cacheKey = `voice_${safeEmail}_${pokemon}`;
-                let audioData = localStorage.getItem(cacheKey);
-
-                if (!audioData) {
-                    // Try to fetch from GitHub
-                    try {
-                        btn.classList.add('playing');
-                        const response = await fetch(audioUrl);
-                        if (response.ok) {
-                            const blob = await response.blob();
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                                audioData = reader.result;
-                                localStorage.setItem(cacheKey, audioData);
-                                playAudioData(audioData, btn);
-                            };
-                            reader.readAsDataURL(blob);
-                            return;
-                        }
-                    } catch (e) {
-                        console.log('Personalized voice not ready yet');
-                    }
-                } else {
-                    playAudioData(audioData, btn);
-                    return;
-                }
-            }
-
-            // Fallback: Use browser TTS
-            btn.classList.add('playing');
-            const names = { pikachu: 'Pikachu', charmander: 'Charmander', squirtle: 'Squirtle', eevee: 'Eevee' };
-            const utterance = new SpeechSynthesisUtterance(names[pokemon]);
-            utterance.onend = () => btn.classList.remove('playing');
-            speechSynthesis.speak(utterance);
-        }
-
-        function playAudioData(dataUrl, btn) {
-            currentAudio = new Audio(dataUrl);
-            btn.classList.add('playing');
-            currentAudio.onended = () => {
-                btn.classList.remove('playing');
-                currentAudio = null;
-            };
-            currentAudio.play();
-        }
 
         let mediaRecorder;
         let audioChunks = [];
