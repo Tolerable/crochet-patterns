@@ -237,10 +237,10 @@ audio = model.generate(text, audio_prompt_path="/path/to/sample.wav")
 Processor: `C:\Users\wetwi\OneDrive\AI\voice-identity\processors\voice_processor.py`
 
 ### Phase 3: Playback System
-- [ ] Voice model caching in localStorage/IndexedDB
-- [ ] Version checking against GitHub
-- [ ] TTS generation using cached voice model
-- [ ] Playback buttons next to phonetic spellings
+- [x] Voice model caching in localStorage/IndexedDB
+- [x] Playback buttons next to phonetic spellings
+- [x] Falls back to browser TTS if no personalized voice
+- [ ] Version checking against GitHub (for cache invalidation)
 
 ### Phase 4: Voice Wardrobe
 - [ ] voice_preferences table for per-site overrides
