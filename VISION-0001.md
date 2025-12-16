@@ -242,12 +242,11 @@ Processor: `C:\Users\wetwi\OneDrive\AI\voice-identity\processors\voice_processor
 - [x] Falls back to browser TTS if no personalized voice
 - [ ] Version checking against GitHub (for cache invalidation)
 
-### Phase 4: Voice Wardrobe (IN PROGRESS)
-- [x] voice_preferences table for per-site overrides
-- [x] Settings UI for managing voice preferences
-- [x] Voice sharing permissions system
-- [x] Community voices opt-in
-- [ ] Voice sharing requests flow (pending approval UI)
+### Phase 4: Voice Wardrobe
+- [ ] voice_preferences table for per-site overrides
+- [ ] Settings UI for managing voice preferences
+- [ ] Voice sharing permissions system
+- [ ] Community voices opt-in
 
 ### Phase 5: Network Expansion
 - [ ] Integrate voice system into other eztunes sites
