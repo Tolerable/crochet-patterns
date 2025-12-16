@@ -116,7 +116,75 @@
                 </div>
             </div>
 
+            <div class="pattern-card">
+                <div style="height:200px; background: linear-gradient(135deg, #C6A77D 0%, #8B7355 100%); display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 80px;">&#129418;</span>
+                </div>
+                <div class="content">
+                    <h3>Eevee Amigurumi</h3>
+                    <p>Fluffy normal-type with loop stitch mane and tail. Intermediate pattern.</p>
+                    <a href="patterns/eevee.html" class="btn">View Pattern</a>
+                </div>
+            </div>
+
         </div>
+
+        <!-- Request Form -->
+        <div class="pattern-card" style="margin-top: 30px;">
+            <div class="content">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Request a Pattern</h3>
+                <p style="margin-bottom: 15px; color: #666;">Want a specific Pokemon or character? Submit a request!</p>
+                <form id="requestForm" onsubmit="submitRequest(event)">
+                    <input type="text" id="reqName" placeholder="Your name" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #eee; border-radius: 8px; font-size: 16px;">
+                    <input type="email" id="reqEmail" placeholder="Your email (optional)" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #eee; border-radius: 8px; font-size: 16px;">
+                    <textarea id="reqPattern" placeholder="What pattern do you want? (e.g., 'Bulbasaur amigurumi' or 'Baby blanket with stars')" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #eee; border-radius: 8px; font-size: 16px; min-height: 100px;"></textarea>
+                    <button type="submit" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer;">Submit Request</button>
+                </form>
+                <p id="requestStatus" style="margin-top: 15px; text-align: center; display: none;"></p>
+            </div>
+        </div>
+
+        <script>
+        async function submitRequest(e) {
+            e.preventDefault();
+            const name = document.getElementById('reqName').value.trim();
+            const email = document.getElementById('reqEmail').value.trim();
+            const pattern = document.getElementById('reqPattern').value.trim();
+            const status = document.getElementById('requestStatus');
+
+            if (!name || !pattern) {
+                status.style.display = 'block';
+                status.style.color = '#e63946';
+                status.textContent = 'Please fill in your name and pattern request.';
+                return;
+            }
+
+            try {
+                const res = await fetch('https://bugpycickribmdfprryq.supabase.co/rest/v1/pattern_requests', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1Z3B5Y2lja3JpYm1kZnBycnlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk2ODQ5MzgsImV4cCI6MjA3NTI2MDkzOH0.1S1ZoV4TvhIyUjKvwYE6wZexS2aM_EMNJzV9Gn8M1CI',
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ name, email: email || null, pattern_request: pattern, status: 'pending' })
+                });
+
+                if (res.ok) {
+                    status.style.display = 'block';
+                    status.style.color = '#2ecc71';
+                    status.textContent = 'Request submitted! We\'ll work on it soon.';
+                    document.getElementById('requestForm').reset();
+                } else {
+                    throw new Error('Failed');
+                }
+            } catch (err) {
+                status.style.display = 'block';
+                status.style.color = '#e63946';
+                status.textContent = 'Oops! Something went wrong. Try again later.';
+            }
+        }
+        </script>
 
         <div class="tagline">
             <h2>Why Pay $35/month?</h2>
