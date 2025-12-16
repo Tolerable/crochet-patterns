@@ -137,13 +137,10 @@
         <div class="pattern-card" style="margin-top: 30px; background: linear-gradient(135deg, #a8e6cf 0%, #88d8b0 100%);">
             <div class="content">
                 <h3 style="color: #2d6a4f; margin-bottom: 15px;">Hear Names in YOUR Voice!</h3>
-                <p style="margin-bottom: 15px; color: #40916c;">Record a short voice sample and we'll use AI to read Pokemon names back to you in your own voice!</p>
+                <p style="margin-bottom: 15px; color: #40916c;">Record yourself saying the Pokemon names and hear them back instantly!</p>
 
                 <div id="voiceSection">
-                    <input type="text" id="voiceName" placeholder="Your name" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #88d8b0; border-radius: 8px; font-size: 16px;">
-                    <input type="email" id="voiceEmail" placeholder="Your email" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #88d8b0; border-radius: 8px; font-size: 16px;">
-
-                    <p style="font-size: 13px; color: #40916c; margin-bottom: 10px;">Read this aloud when recording: <strong>"Hi, my name is [your name]. Pikachu, Charmander, Squirtle, Eevee!"</strong></p>
+                    <p style="font-size: 13px; color: #40916c; margin-bottom: 10px;">Read this aloud: <strong>"Pikachu, Charmander, Squirtle, Eevee!"</strong></p>
 
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                         <button id="recordBtn" onclick="toggleRecording()" style="flex: 1; padding: 15px; background: #2d6a4f; color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer;">
@@ -158,9 +155,16 @@
                         <span style="color: #e63946; font-weight: bold;">Recording...</span>
                     </div>
 
-                    <button id="submitVoiceBtn" onclick="submitVoice()" disabled style="width: 100%; padding: 15px; background: #1b4332; color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; opacity: 0.5;">
-                        Submit Voice Sample
-                    </button>
+                    <!-- Sign up section - hidden until they record -->
+                    <div id="signupSection" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 2px dashed #88d8b0;">
+                        <p style="font-size: 14px; color: #2d6a4f; margin-bottom: 10px; font-weight: bold;">Want to save your voice permanently?</p>
+                        <p style="font-size: 12px; color: #40916c; margin-bottom: 10px;">Sign up to use your voice across all our sites!</p>
+                        <input type="text" id="voiceName" placeholder="Your name" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #88d8b0; border-radius: 8px; font-size: 16px;">
+                        <input type="email" id="voiceEmail" placeholder="Your email" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid #88d8b0; border-radius: 8px; font-size: 16px;">
+                        <button id="submitVoiceBtn" onclick="submitVoice()" style="width: 100%; padding: 15px; background: #1b4332; color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer;">
+                            Save My Voice
+                        </button>
+                    </div>
 
                     <p id="voiceStatus" style="margin-top: 15px; text-align: center; display: none;"></p>
                 </div>
@@ -176,6 +180,21 @@
         let audioBlob;
         let isRecording = false;
 
+        // Check for existing recording in localStorage on page load
+        window.onload = function() {
+            const savedAudio = localStorage.getItem('voiceSample');
+            if (savedAudio) {
+                // Convert base64 back to blob
+                fetch(savedAudio).then(r => r.blob()).then(blob => {
+                    audioBlob = blob;
+                    document.getElementById('playBtn').disabled = false;
+                    document.getElementById('playBtn').style.opacity = '1';
+                    document.getElementById('signupSection').style.display = 'block';
+                    document.getElementById('recordBtn').textContent = 'Re-record';
+                });
+            }
+        };
+
         async function toggleRecording() {
             const btn = document.getElementById('recordBtn');
             const statusDiv = document.getElementById('recordingStatus');
@@ -187,12 +206,20 @@
                     audioChunks = [];
 
                     mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-                    mediaRecorder.onstop = () => {
+                    mediaRecorder.onstop = async () => {
                         audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+
+                        // Save to localStorage
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            localStorage.setItem('voiceSample', reader.result);
+                        };
+                        reader.readAsDataURL(audioBlob);
+
+                        // Enable playback and show signup
                         document.getElementById('playBtn').disabled = false;
                         document.getElementById('playBtn').style.opacity = '1';
-                        document.getElementById('submitVoiceBtn').disabled = false;
-                        document.getElementById('submitVoiceBtn').style.opacity = '1';
+                        document.getElementById('signupSection').style.display = 'block';
                     };
 
                     mediaRecorder.start();
@@ -244,7 +271,7 @@
             status.textContent = 'Uploading...';
 
             try {
-                // Upload to storage
+                // Upload to storage (temporary - will be processed and deleted)
                 const filename = `${Date.now()}_${email.replace('@', '_at_')}.webm`;
                 const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/voice-samples/${filename}`, {
                     method: 'POST',
@@ -281,9 +308,10 @@
 
                 if (profileRes.ok) {
                     status.style.color = '#2ecc71';
-                    status.textContent = 'Voice sample submitted! We\'ll process it and notify you when ready.';
-                    document.getElementById('submitVoiceBtn').disabled = true;
-                    document.getElementById('submitVoiceBtn').style.opacity = '0.5';
+                    status.textContent = 'Voice saved! You can now use your voice across all our sites.';
+                    document.getElementById('signupSection').innerHTML = '<p style="color: #2ecc71; font-weight: bold;">Account created! Your voice is being processed.</p>';
+                    // Store email locally so we know they're "logged in"
+                    localStorage.setItem('voiceEmail', email);
                 } else {
                     throw new Error('Profile creation failed');
                 }

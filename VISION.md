@@ -87,13 +87,20 @@ CREATE TABLE voice_generations (
 - Users with speech difficulties can have a "voice" online
 - Content read to them in a familiar voice (their own)
 
-## MVP for This Site
-1. Add "Record your voice" button to homepage
-2. Store voice clip in Supabase storage
-3. Use ElevenLabs API to clone voice (free tier: 10k chars/month)
-4. Generate audio for the 4 Pokemon names
-5. Cache generated audio to avoid re-generation
-6. Play button next to each phonetic spelling
+## MVP for This Site (IMPLEMENTED)
+1. Record button - no signup required to record/playback
+2. Audio stored in localStorage for instant local playback
+3. "Save My Voice" signup appears after recording
+4. On signup: uploads to Supabase bucket (temporary)
+5. Chatterbox processes sample, creates voice model
+6. Raw audio deleted from bucket, model stored in repo
+7. User identified by email for cross-site voice access
+
+## Storage Strategy
+- **localStorage**: Temporary playback on same browser (free, instant)
+- **Supabase bucket**: Intake queue for processing (temporary)
+- **GitHub repo**: Final voice models after Chatterbox processing (permanent, free)
+- **voice_profiles table**: Tracks user email -> voice model location
 
 ## Future Expansion
 - Central voice profile service across all eztunes.xyz sites
@@ -102,6 +109,34 @@ CREATE TABLE voice_generations (
 - Multiple voice "moods" (calm, excited, serious)
 - Share voice profiles with family/friends (opt-in)
 
+## The Bigger Picture: User-Owned Voice Identity
+
+This is potentially a first - **User-Owned Voice Identity** as a service layer:
+
+1. User submits voice sample on ANY site in the network
+2. Chatterbox clones their voice ONCE
+3. Voice model is stored and linked to their identity
+4. EVERY site in the network can now use their voice
+
+**Use cases across the network:**
+- **RPG sites**: Quest text, NPC dialogue, item descriptions - all in YOUR voice
+- **Crochet patterns**: Pronunciation guides, tutorial narration
+- **Music sites**: Track announcements, playlist intros
+- **Educational**: Learning content reinforced by hearing yourself
+- **Games**: In-game narration, character voices
+
+**Why this matters:**
+- No one else is doing cross-site voice personalization
+- Users own their voice identity
+- One recording = infinite personalized experiences
+- Builds loyalty - "my voice is in this ecosystem"
+
+**Potential as standalone service:**
+- API for other developers to tap into
+- "Add voice personalization to your site in 5 minutes"
+- Users bring their voice profile with them
+
 ---
 *Conceived during crochet-patterns development, December 2024*
 *"Hear yourself say the names!"*
+*"Your voice, everywhere."*
