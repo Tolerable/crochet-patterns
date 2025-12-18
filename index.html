@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Crochet Patterns - Free Pattern Generator</title>
     <meta name="description" content="Free AI-generated crochet patterns. Amigurumi, blankets, and more. No subscription needed.">
+    <meta name="theme-color" content="#667eea">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/auth.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW:', err));
+        }
+    </script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -233,7 +242,7 @@
                 </div>
                 <div class="content">
                     <h3>Pikachu Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(PEE-kah-choo) <span class="play-btn" onclick="playPronunciation('pikachu')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(PEE-kah-choo ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('pikachu')" title="Hear it"></span></p>
                     <p>Adorable Pikachu plushie with full step-by-step instructions. Perfect for Pokemon fans!</p>
                     <a href="patterns/pikachu.html" class="btn">View Pattern</a>
                 </div>
@@ -245,7 +254,7 @@
                 </div>
                 <div class="content">
                     <h3>Charmander Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(CHAR-man-der) <span class="play-btn" onclick="playPronunciation('charmander')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(CHAR-man-der ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('charmander')" title="Hear it"></span></p>
                     <p>Fire-type starter Pokemon with flame tail detail. Intermediate level pattern.</p>
                     <a href="patterns/charmander.html" class="btn">View Pattern</a>
                 </div>
@@ -257,7 +266,7 @@
                 </div>
                 <div class="content">
                     <h3>Squirtle Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(SKWIR-tul) <span class="play-btn" onclick="playPronunciation('squirtle')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(SKWIR-tul ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('squirtle')" title="Hear it"></span></p>
                     <p>Water-type turtle Pokemon with shell details. Great for beginners!</p>
                     <a href="patterns/squirtle.html" class="btn">View Pattern</a>
                 </div>
@@ -269,7 +278,7 @@
                 </div>
                 <div class="content">
                     <h3>Eevee Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(EE-vee) <span class="play-btn" onclick="playPronunciation('eevee')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(EE-vee ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('eevee')" title="Hear it"></span></p>
                     <p>Fluffy normal-type with loop stitch mane and tail. Intermediate pattern.</p>
                     <a href="patterns/eevee.html" class="btn">View Pattern</a>
                 </div>
@@ -329,7 +338,7 @@
                 </div>
                 <div class="content">
                     <h3>Bulbasaur Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(BUL-ba-sawr) <span class="play-btn" onclick="playPronunciation('bulbasaur')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(BUL-ba-sawr ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('bulbasaur')" title="Hear it"></span></p>
                     <p>Grass-type starter with bulb detail. Low-sew pattern by 53stitches!</p>
                     <a href="patterns/bulbasaur.html" class="btn">View Pattern</a>
                 </div>
@@ -341,7 +350,7 @@
                 </div>
                 <div class="content">
                     <h3>Gengar Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(GEN-gar) <span class="play-btn" onclick="playPronunciation('gengar')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(GEN-gar ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('gengar')" title="Hear it"></span></p>
                     <p>Spooky Ghost-type with that wicked grin. Intermediate pattern!</p>
                     <a href="patterns/gengar.html" class="btn">View Pattern</a>
                 </div>
@@ -353,7 +362,7 @@
                 </div>
                 <div class="content">
                     <h3>Jigglypuff Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(JIG-lee-puff) <span class="play-btn" onclick="playPronunciation('jigglypuff')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(JIG-lee-puff ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('jigglypuff')" title="Hear it"></span></p>
                     <p>The Balloon Pokemon! Easy beginner pattern. Includes crocheted eyes!</p>
                     <a href="patterns/jigglypuff.html" class="btn">View Pattern</a>
                 </div>
@@ -365,7 +374,7 @@
                 </div>
                 <div class="content">
                     <h3>Snorlax Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(SNOR-laks) <span class="play-btn" onclick="playPronunciation('snorlax')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(SNOR-laks ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('snorlax')" title="Hear it"></span></p>
                     <p>The Sleeping Pokemon! Chibi version fits in a Pokeball. Z z z...</p>
                     <a href="patterns/snorlax.html" class="btn">View Pattern</a>
                 </div>
@@ -378,7 +387,7 @@
                 </div>
                 <div class="content">
                     <h3>Vaporeon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(vay-POR-ee-on) <span class="play-btn" onclick="playPronunciation('vaporeon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(vay-POR-ee-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('vaporeon')" title="Hear it"></span></p>
                     <p>Water-type Eeveelution with elegant fins. Low-sew pattern!</p>
                     <a href="patterns/vaporeon.html" class="btn">View Pattern</a>
                 </div>
@@ -390,7 +399,7 @@
                 </div>
                 <div class="content">
                     <h3>Jolteon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(JOLT-ee-on) <span class="play-btn" onclick="playPronunciation('jolteon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(JOLT-ee-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('jolteon')" title="Hear it"></span></p>
                     <p>Electric-type with spiky fur. Low-sew pattern!</p>
                     <a href="patterns/jolteon.html" class="btn">View Pattern</a>
                 </div>
@@ -402,7 +411,7 @@
                 </div>
                 <div class="content">
                     <h3>Flareon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(FLAIR-ee-on) <span class="play-btn" onclick="playPronunciation('flareon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(FLAIR-ee-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('flareon')" title="Hear it"></span></p>
                     <p>Fire-type with fluffy mane. Low-sew pattern!</p>
                     <a href="patterns/flareon.html" class="btn">View Pattern</a>
                 </div>
@@ -414,7 +423,7 @@
                 </div>
                 <div class="content">
                     <h3>Espeon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(ESS-pee-on) <span class="play-btn" onclick="playPronunciation('espeon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(ESS-pee-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('espeon')" title="Hear it"></span></p>
                     <p>Psychic-type with forked tail. Low-sew pattern!</p>
                     <a href="patterns/espeon.html" class="btn">View Pattern</a>
                 </div>
@@ -426,7 +435,7 @@
                 </div>
                 <div class="content">
                     <h3>Umbreon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(UM-bree-on) <span class="play-btn" onclick="playPronunciation('umbreon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(UM-bree-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('umbreon')" title="Hear it"></span></p>
                     <p>Dark-type with glowing rings. Uses RED safety eyes!</p>
                     <a href="patterns/umbreon.html" class="btn">View Pattern</a>
                 </div>
@@ -438,7 +447,7 @@
                 </div>
                 <div class="content">
                     <h3>Leafeon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(LEEF-ee-on) <span class="play-btn" onclick="playPronunciation('leafeon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(LEEF-ee-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('leafeon')" title="Hear it"></span></p>
                     <p>Grass-type with leaf details. Low-sew pattern!</p>
                     <a href="patterns/leafeon.html" class="btn">View Pattern</a>
                 </div>
@@ -450,7 +459,7 @@
                 </div>
                 <div class="content">
                     <h3>Glaceon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(GLAY-see-on) <span class="play-btn" onclick="playPronunciation('glaceon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(GLAY-see-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('glaceon')" title="Hear it"></span></p>
                     <p>Ice-type with crystal details. Low-sew pattern!</p>
                     <a href="patterns/glaceon.html" class="btn">View Pattern</a>
                 </div>
@@ -462,7 +471,7 @@
                 </div>
                 <div class="content">
                     <h3>Sylveon Amigurumi</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(SIL-vee-on) <span class="play-btn" onclick="playPronunciation('sylveon')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(SIL-vee-on ah-mee-goo-ROO-mee) <span class="play-btn" onclick="playPronunciation('sylveon')" title="Hear it"></span></p>
                     <p>Fairy-type with ribbon feelers. The most magical Eeveelution!</p>
                     <a href="patterns/sylveon.html" class="btn">View Pattern</a>
                 </div>
@@ -597,10 +606,10 @@
             // Fallback: Use browser TTS
             btn.classList.add('playing');
             const names = {
-                pikachu: 'Pikachu Plushie', charmander: 'Charmander Plushie', squirtle: 'Squirtle Plushie', eevee: 'Eevee Plushie',
-                bulbasaur: 'Bulbasaur Plushie', gengar: 'Gengar Plushie', jigglypuff: 'Jigglypuff Plushie', snorlax: 'Snorlax Plushie',
-                vaporeon: 'Vaporeon Plushie', jolteon: 'Jolteon Plushie', flareon: 'Flareon Plushie', espeon: 'Espeon Plushie',
-                umbreon: 'Umbreon Plushie', leafeon: 'Leafeon Plushie', glaceon: 'Glaceon Plushie', sylveon: 'Sylveon Plushie',
+                pikachu: 'Pikachu Ah-mee-goo-roo-mee', charmander: 'Charmander Ah-mee-goo-roo-mee', squirtle: 'Squirtle Ah-mee-goo-roo-mee', eevee: 'Eevee Ah-mee-goo-roo-mee',
+                bulbasaur: 'Bulbasaur Ah-mee-goo-roo-mee', gengar: 'Gengar Ah-mee-goo-roo-mee', jigglypuff: 'Jigglypuff Ah-mee-goo-roo-mee', snorlax: 'Snorlax Ah-mee-goo-roo-mee',
+                vaporeon: 'Vay-poor-ee-on Ah-mee-goo-roo-mee', jolteon: 'Jolt-ee-on Ah-mee-goo-roo-mee', flareon: 'Flair-ee-on Ah-mee-goo-roo-mee', espeon: 'Es-pee-on Ah-mee-goo-roo-mee',
+                umbreon: 'Um-bree-on Ah-mee-goo-roo-mee', leafeon: 'Leaf-ee-on Ah-mee-goo-roo-mee', glaceon: 'Glay-see-on Ah-mee-goo-roo-mee', sylveon: 'Sil-vee-on Ah-mee-goo-roo-mee',
                 'team-rocket-beanie': 'Team Rocket Beanie',
                 'pikachu-beanie': 'Pikachu Beanie',
                 'eevee-beanie': 'Eevee Beanie',
