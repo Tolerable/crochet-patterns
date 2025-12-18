@@ -561,11 +561,11 @@
             // Fallback: Use browser TTS
             btn.classList.add('playing');
             const names = {
-                pikachu: 'Pikachu Plushie', charmander: 'Charmander Plushie', squirtle: 'Squirtle Plushie', eevee: 'Eevee Plushie',
-                bulbasaur: 'Bulbasaur Plushie', gengar: 'Gengar Plushie', jigglypuff: 'Jigglypuff Plushie', snorlax: 'Snorlax Plushie',
-                vaporeon: 'Vaporeon Plushie', jolteon: 'Jolteon Plushie', flareon: 'Flareon Plushie', espeon: 'Espeon Plushie',
-                umbreon: 'Umbreon Plushie', leafeon: 'Leafeon Plushie', glaceon: 'Glaceon Plushie', sylveon: 'Sylveon Plushie',
-                'team-rocket-beanie': 'Team Rocket Beanie'
+                pikachu: 'Pikachu', charmander: 'Charmander', squirtle: 'Squirtle', eevee: 'Eevee',
+                bulbasaur: 'Bulbasaur', gengar: 'Gengar', jigglypuff: 'Jigglypuff', snorlax: 'Snorlax',
+                vaporeon: 'Vaporeon', jolteon: 'Jolteon', flareon: 'Flareon', espeon: 'Espeon',
+                umbreon: 'Umbreon', leafeon: 'Leafeon', glaceon: 'Glaceon', sylveon: 'Sylveon',
+                teamrocket: 'Team Rocket'
             };
             const utterance = new SpeechSynthesisUtterance(names[pokemon] || pokemon);
             utterance.onend = () => btn.classList.remove('playing');
