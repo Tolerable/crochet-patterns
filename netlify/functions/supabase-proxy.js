@@ -29,6 +29,7 @@ exports.handler = async (event) => {
     const allowed = new Set([
       'https://aicrochet.org',
       'https://www.aicrochet.org',
+      'https://aicrochet-org.netlify.app',
       'http://localhost:8888'
     ]);
     const origin = event.headers.origin || event.headers.Origin || '';
