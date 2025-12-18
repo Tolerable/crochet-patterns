@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Crochet Patterns - Free Pattern Generator</title>
     <meta name="description" content="Free AI-generated crochet patterns. Amigurumi, blankets, and more. No subscription needed.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/auth.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -94,9 +96,128 @@
             margin-top: 40px;
             font-size: 14px;
         }
+        /* Nav bar */
+        .topnav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: rgba(102, 126, 234, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .topnav .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-btn-sec {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .nav-btn-sec:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .nav-btn-prim {
+            background: white;
+            color: #667eea;
+        }
+        .nav-btn-prim:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .container { padding-top: 70px; }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex !important; }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            color: #333;
+        }
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .modal button.submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        /* Ad zone */
+        .ad-zone {
+            margin-top: 30px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Top Navigation -->
+    <div class="topnav">
+        <a class="brand" href="/"><i class="fas fa-yarn"></i> AI Crochet</a>
+        <div class="nav-actions">
+            <div id="auth-buttons">
+                <button onclick="openAuthModal('signin')" class="nav-btn nav-btn-sec"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+                <button onclick="openAuthModal('signup')" class="nav-btn nav-btn-prim"><i class="fas fa-user-plus"></i> Sign Up</button>
+            </div>
+            <div id="user-menu" style="display:none">
+                <button class="nav-btn nav-btn-sec" onclick="handleSignOut()">
+                    <i class="fas fa-user-circle"></i> <span id="user-display-name"></span> <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <header>
@@ -911,12 +1032,117 @@
             <p style="margin-top: 15px;"><a href="resources.html" style="color: white; font-weight: bold;">Browse Free Resources &rarr;</a></p>
         </div>
 
+        <!-- Ad Zone -->
+        <div class="ad-zone">
+            <script src="/js/ads.js" data-zone="Crochet"></script>
+        </div>
+
         <footer>
             <p>Patterns generated with AI assistance. Free to use for personal projects.</p>
             <p style="margin-top: 10px;">Want a custom pattern? <a href="mailto:ReverendTolerantAIMinistries@gmail.com" style="color: white;">Contact us</a></p>
             <p style="margin-top: 10px;"><a href="https://www.eztunes.xyz/bugs/?game=crochet" style="color: #ffd700;">Report a Bug</a></p>
         </footer>
     </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+                <h2 id="authModalTitle" style="margin:0">Sign In</h2>
+                <button onclick="closeAuthModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#666">&times;</button>
+            </div>
+            <input type="email" id="authEmail" placeholder="Email">
+            <input type="password" id="authPassword" placeholder="Password">
+            <div id="displayNameGroup" style="display:none">
+                <input type="text" id="authDisplayName" placeholder="Display Name">
+            </div>
+            <button class="submit-btn" onclick="submitAuth()">Continue</button>
+            <p style="margin-top:1rem;text-align:center">
+                <a href="#" id="toggleAuthMode" onclick="toggleAuthMode();return false;" style="color:#667eea">Don't have an account? Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+    // Auth UI
+    let authMode = 'signin';
+
+    function openAuthModal(mode = 'signin') {
+        authMode = mode;
+        document.getElementById('authModalTitle').textContent = mode === 'signin' ? 'Sign In' : 'Sign Up';
+        document.getElementById('toggleAuthMode').textContent = mode === 'signin' ? "Don't have an account? Sign Up" : "Already have an account? Sign In";
+        document.getElementById('displayNameGroup').style.display = mode === 'signup' ? 'block' : 'none';
+        document.getElementById('authModal').classList.add('active');
+    }
+
+    function closeAuthModal() {
+        document.getElementById('authModal').classList.remove('active');
+    }
+
+    function toggleAuthMode() {
+        authMode = authMode === 'signin' ? 'signup' : 'signin';
+        document.getElementById('authModalTitle').textContent = authMode === 'signin' ? 'Sign In' : 'Sign Up';
+        document.getElementById('toggleAuthMode').textContent = authMode === 'signin' ? "Don't have an account? Sign Up" : "Already have an account? Sign In";
+        document.getElementById('displayNameGroup').style.display = authMode === 'signup' ? 'block' : 'none';
+    }
+
+    async function submitAuth() {
+        const email = document.getElementById('authEmail').value.trim();
+        const password = document.getElementById('authPassword').value.trim();
+        if (!email || !password) {
+            alert('Please enter email and password.');
+            return;
+        }
+        try {
+            if (authMode === 'signin') {
+                await window.auth.signIn(email, password);
+            } else {
+                const displayName = document.getElementById('authDisplayName').value.trim();
+                if (!displayName) {
+                    alert('Please enter a display name.');
+                    return;
+                }
+                await window.auth.signUp(email, password, displayName);
+                alert('Account created! Check your email for confirmation.');
+                closeAuthModal();
+                return;
+            }
+            closeAuthModal();
+            refreshAuthUI();
+        } catch (err) {
+            alert(err.message || 'Authentication failed');
+        }
+    }
+
+    function handleSignOut() {
+        if (confirm('Sign out?')) {
+            window.auth.signOut();
+        }
+    }
+
+    function refreshAuthUI() {
+        const authButtons = document.getElementById('auth-buttons');
+        const userMenu = document.getElementById('user-menu');
+        const displayName = document.getElementById('user-display-name');
+
+        if (window.auth.isAuthenticated()) {
+            const user = window.auth.getUser();
+            const name = user.display_name || user.email?.split('@')[0] || 'User';
+            authButtons.style.display = 'none';
+            userMenu.style.display = 'block';
+            displayName.textContent = name;
+        } else {
+            authButtons.style.display = 'flex';
+            userMenu.style.display = 'none';
+        }
+    }
+
+    // Initialize auth on page load
+    (async () => {
+        await window.auth.init();
+        refreshAuthUI();
+    })();
+    </script>
 
 </body>
 </html>
