@@ -281,9 +281,45 @@
                 </div>
                 <div class="content">
                     <h3>Team Rocket Beanie</h3>
-                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(TEAM ROK-it) <span class="play-btn" onclick="playPronunciation('teamrocket')" title="Hear it"></span></p>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(TEAM ROK-it) <span class="play-btn" onclick="playPronunciation('team-rocket-beanie')" title="Hear it"></span></p>
                     <p>Classic white beanie with iconic red "R" emblem. Prepare for trouble!</p>
                     <a href="patterns/team-rocket-beanie.html" class="btn">View Pattern</a>
+                </div>
+            </div>
+
+            <div class="pattern-card">
+                <div style="height:200px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); display: flex; align-items: center; justify-content: center; border: 3px solid #333;">
+                    <span style="font-size: 60px;">&#129506;</span>
+                </div>
+                <div class="content">
+                    <h3>Pikachu Beanie</h3>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(PEE-ka-choo) <span class="play-btn" onclick="playPronunciation('pikachu-beanie')" title="Hear it"></span></p>
+                    <p>Yellow beanie with signature ears and red cheeks. Pika pika!</p>
+                    <a href="patterns/pikachu-beanie.html" class="btn">View Pattern</a>
+                </div>
+            </div>
+
+            <div class="pattern-card">
+                <div style="height:200px; background: linear-gradient(135deg, #c4a484 0%, #8b6914 100%); display: flex; align-items: center; justify-content: center; border: 3px solid #5d4e37;">
+                    <span style="font-size: 60px;">&#129418;</span>
+                </div>
+                <div class="content">
+                    <h3>Eevee Beanie</h3>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(EE-vee) <span class="play-btn" onclick="playPronunciation('eevee-beanie')" title="Hear it"></span></p>
+                    <p>Brown beanie with fluffy ears and mane. The Evolution Pokemon!</p>
+                    <a href="patterns/eevee-beanie.html" class="btn">View Pattern</a>
+                </div>
+            </div>
+
+            <div class="pattern-card">
+                <div style="height:200px; background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%); display: flex; align-items: center; justify-content: center; border: 3px solid #db7093;">
+                    <span style="font-size: 60px;">&#127880;</span>
+                </div>
+                <div class="content">
+                    <h3>Jigglypuff Beanie</h3>
+                    <p class="pronunciation" style="font-style: italic; color: #999; font-size: 12px;">(JIG-lee-puf) <span class="play-btn" onclick="playPronunciation('jigglypuff-beanie')" title="Hear it"></span></p>
+                    <p>Pink beanie with signature curl and big eyes. Don't fall asleep!</p>
+                    <a href="patterns/jigglypuff-beanie.html" class="btn">View Pattern</a>
                 </div>
             </div>
 
@@ -565,7 +601,10 @@
                 bulbasaur: 'Bulbasaur Plushie', gengar: 'Gengar Plushie', jigglypuff: 'Jigglypuff Plushie', snorlax: 'Snorlax Plushie',
                 vaporeon: 'Vaporeon Plushie', jolteon: 'Jolteon Plushie', flareon: 'Flareon Plushie', espeon: 'Espeon Plushie',
                 umbreon: 'Umbreon Plushie', leafeon: 'Leafeon Plushie', glaceon: 'Glaceon Plushie', sylveon: 'Sylveon Plushie',
-                'team-rocket-beanie': 'Team Rocket Beanie'
+                'team-rocket-beanie': 'Team Rocket Beanie',
+                'pikachu-beanie': 'Pikachu Beanie',
+                'eevee-beanie': 'Eevee Beanie',
+                'jigglypuff-beanie': 'Jigglypuff Beanie'
             };
             const utterance = new SpeechSynthesisUtterance(names[pokemon] || pokemon);
             utterance.onend = () => btn.classList.remove('playing');
